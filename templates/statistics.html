@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1.2, user-scalable=no" name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Water Resources Data Analytics Platform</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/echarts5.3.3.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/data.css') }}">
+</head>
+
+<body>
+    <div class="videobg style1">
+        <video id="video" src="{{ url_for('static', filename='img/2.mp4') }}" style="width: 100%; height:100%;" autoplay
+               muted loop></video>
+    </div>
+    <div class="head">
+        <h1><span>Water Resources Data Platform</span></h1>
+        <div class="topbtns">
+            <a href="#"><img src="{{ url_for('static', filename='img/exit.svg') }}">Exit</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 左侧 mainbox1 -->
+        <div class="mainbox1" style="width: 100%;">
+            <ul class="clearfix" style="height: 100%; ">
+                <li style="width: 45%;"> <!-- 调整宽度，增加左侧部分的宽度 -->
+                    <!-- Current Time Box -->
+<div class="boxall fadeIn" style="height: calc(40% - 10px);">
+    <div class="tit01">Current Time</div>
+    <div class="boxnav text" style="text-align: center;">
+        <ul>
+            <li>
+                <p class="Odometer1" id="realTime"
+                   style="font-size: 30px; font-weight: bold; color: #fff; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); padding: 20px; border-radius: 10px; ">
+                </p>
+            </li>
+        </ul>
+    </div>
+    <div class="boxfoot"></div>
+</div>
+
+                    <div class="boxall fadeIn delay02" style="height: calc(60% - 10px);">
+                        <div class="tit01">Water Area Ratio</div>
+                        <div class="boxnav" id="echarts1"></div>
+                        <div class="boxfoot"></div>
+                    </div>
+                </li>
+
+                <li style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; width: 55%;"> <!-- 修改右侧部分宽度 -->
+                    <div class="boxall fadeIn delay06" style="height: calc(50% - 5px);">
+                        <div class="tit01">Water Coverage</div>
+                        <div class="boxnav" id="echarts5"></div>
+                        <div class="boxfoot"></div>
+                    </div>
+
+                    <div class="boxall fadeIn delay06" style="height: calc(50% - 5px);">
+                        <div class="tit01">Water Metrics</div>
+                        <div class="boxnav text">
+                            <ul>
+                                <li>
+                                    <span>Total Area</span>
+                                    <p class="Odometer2">0</p><small>km²</small>
+                                </li>
+                                <li>
+                                    <span>Total Perimeter</span>
+                                    <p class="Odometer3">0</p><small>km</small>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="boxfoot"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <!-- 右侧 mainbox2 -->
+        <div class="mainbox2">
+            <ul class="clearfix vertical-layout" style="height: 100%; display: flex; flex-direction: column; gap: 8px; margin-left: -20px;">
+                <li style="flex: 1;">
+                    <div class="boxall fadeIn delay02" style="height: 90%; width: 800px; ">
+                        <div class="tit01">Distribution of Water Bodies</div>
+                        <div class="boxnav" id="echarts2"></div>
+                        <div class="boxfoot"></div>
+                    </div>
+                </li>
+                <li style="flex: 1;">
+                    <div class="boxall fadeIn delay08" style="height: 90%; width: 800px; margin-top: -40px; ">
+                        <div class="tit01">Historical Water Analysis</div>
+                        <div class="boxnav" id="echarts3"></div>
+                        <div class="boxfoot"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/js.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/Odometer.js') }}"></script>
+
+    <script>
+        // Real-time clock
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('realTime').innerHTML =
+                now.toLocaleDateString('en-US') + ' ' +
+                now.toLocaleTimeString('en-US');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Video playback speed
+        const vd = document.getElementById('video');
+        vd.playbackRate = 0.5;
+
+        // Initialize charts
+        const myChart1 = echarts.init(document.getElementById('echarts1'));
+        const myChart2 = echarts.init(document.getElementById('echarts2'));
+        const myChart3 = echarts.init(document.getElementById('echarts3'));
+        const myChart5 = echarts.init(document.getElementById('echarts5'));
+
+        // Initialize pie chart options
+        const initPieOption = () => ({
+            tooltip: { trigger: 'item' },
+            series: [{
+                type: 'pie',
+                radius: ['40%', '70%'],
+                label: { show: true, formatter: '{b}: {d}%' },
+                emphasis: { label: { show: true, fontSize: '20' } }
+            }]
+        });
+
+        // Apply initial options
+        let option1 = initPieOption();
+        let option5 = initPieOption();
+        myChart1.setOption(option1);
+        myChart5.setOption(option5);
+
+        // Sample data initialization
+        let waterArea = 24500, perimeter = 1800;
+        const odo2 = new Odometer('.Odometer2', { number: waterArea });
+        const odo3 = new Odometer('.Odometer3', { number: perimeter });
+
+        setInterval(() => {
+            // Update metrics
+            waterArea += Math.round(Math.random() * 100);
+            perimeter += Math.round(Math.random() * 50);
+            odo2.update(waterArea);
+            odo3.update(perimeter);
+
+            // Update Water Area Ratio (Pie Chart 1)
+            option1.series[0].data = [
+                { value: Math.random() * 100, name: 'river' },
+                { value: Math.random() * 100, name: 'lake' },
+                { value: Math.random() * 100, name: 'glacier' },
+                { value: Math.random() * 100, name: 'ocean' },
+                { value: Math.random() * 100, name: 'other' },
+                { value: Math.random() * 100, name: 'wetland' },
+                { value: Math.random() * 100, name: 'puddle' }
+            ];
+            myChart1.setOption(option1);
+
+            // Update Water Coverage (Pie Chart 5)
+            const coverage = Math.round(Math.random() * 100);
+            option5.series[0].data = [
+                { value: coverage, name: 'Water' },
+                { value: 100 - coverage, name: 'Land' }
+            ];
+            myChart5.setOption(option5);
+
+            // Update Distribution chart
+            option2.series[0].data = [
+                { value: Math.random() * 100, name: 'Lake' },
+                { value: Math.random() * 100, name: 'River' },
+                { value: Math.random() * 100, name: 'Reservoir' }
+            ];
+            myChart2.setOption(option2);
+
+            // Update Historical Analysis
+            const historyData = Array.from({length: 12},
+                () => Math.round(Math.random() * 1000));
+            option3.series[0].data = historyData;
+            myChart3.setOption(option3);
+
+        }, 2000);
+
+        window.addEventListener("resize", () => {
+            myChart1.resize();
+            myChart2.resize();
+            myChart3.resize();
+            myChart5.resize();
+        });
+    </script>
+</body>
+</html>

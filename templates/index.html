@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta
+            name="description"
+            content="HydrpNet: Water Body Extraction System for Remote Sensing Images"
+    />
+    <meta
+            name="keywords"
+            content="HydrpNet: Water Body Extraction System for Remote Sensing Images"
+    />
+    <meta name="robots" content="index, follow"/>
+    <meta name="author" content="Insomniacafe"/>
+
+    <title>
+        HydrpNet: Water Body Extraction System for Remote Sensing Images
+    </title>
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo/favicon.ico') }}"/>
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"/>
+    <!-- normalize css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}"/>
+    <!-- slick slider css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick-theme.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css') }}"/>
+    <!-- cursor css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cursor.css') }}"/>
+    <!-- animate css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}"/>
+    <!-- Nice select css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}"/>
+    <!-- fontawesome css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome.min.css') }}"/>
+    <!-- modal video css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal-video.min.css') }}"/>
+    <!-- popup video css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/video-css.css') }}"/>
+    <!-- meanmenu css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/meanmenu.min.css') }}"/>
+    <!-- style css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="home-2">
+
+<!-- header menu -->
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="header__wrapper">
+                <div class="header__logo" style="width: 400px; height: 100px;">
+                    <div style="display: inline-block; line-height: 100px;">
+                        <a href="index.html">
+                            <img src="{{ url_for('static', filename='img/logo/logo.png') }}" height="70px" alt="Logo"/>
+                        </a>
+                    </div>
+                    <div style="display: inline-block; line-height: 100px;">
+                        <a href="index.html" style="font-size: 40px; font-weight: bold;">HydroNet</a>
+                    </div>
+                </div>
+                <div class="header__menu">
+                    <nav Id="offcanvase__menu">
+							<ul>
+								<li><a href="/upload">Upload & Analyze</a></li>
+								<li><a href="/realtime">Satellite Detection</a></li>
+                                <li><a href="/analyze">Report Generation</a></li>
+							</ul>
+						</nav>
+                </div>
+                <div class="header__right">
+                    <div class="header__right--btn">
+
+                        <a class="signup" href="register.html"
+                        >Get Started <i class="fa-thin fa-arrow-right"></i
+                        ></a>
+                    </div>
+                    <button class="menu-icon d-md-block d-lg-none">
+                        <i class="fa-sharp fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- header menu end -->
+
+<!-- hero area -->
+<section class="hero-two pt-110">
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="hero-two__content text-center">
+                    <h2 class="">
+                        Water Body Extraction System
+                        <img src="{{ url_for('static', filename='img/water/water_body_8.jpg') }}" alt=""/> <br/>
+                        for Remote Sensing
+                        <strong class="clip-text-2">Images</strong>
+                    </h2>
+                    <p class="">
+                        The system segments water bodies from uploaded remote sensing images using deep learning,
+                        calculates area, visualizes results on a map, and generates automated reports for download.
+                    </p>
+                    <div class="prompt__box">
+                        <a href="/upload">
+                            <button type="submit" class="prompt-btn">
+                                Detect
+                                <i class="fa-sharp fa-light fa-arrow-right-long"></i>
+                            </button>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- hero area end -->
+
+<!-- infinite scrolling -->
+<div class="scrolling pt-110 pb-110">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="image-scrolling">
+                <div class="items">
+                    <div class="s-img">
+                        <img src="{{ url_for('static', filename='img/scrolling/1.jpg') }}" alt=""/>
+                    </div>
+                    <div class="s-img">
+                        <img src="{{ url_for('static', filename='img/scrolling/2.jpg') }}" alt=""/>
+                    </div>
+                    <div class="s-img">
+                        <img src="{{ url_for('static', filename='img/scrolling/3.jpg') }}" alt=""/>
+                    </div>
+                    <div class="s-img">
+                        <img src="{{ url_for('static', filename='img/scrolling/4.jpg') }}" alt=""/>
+                    </div>
+                    <div class="s-img">
+                        <img src="{{ url_for('static', filename='img/scrolling/5.jpg') }}" alt=""/>
+                    </div>
+                    <div class="s-img">
+                        <img src="{{ url_for('static', filename='img/scrolling/6.jpg') }}" alt=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-scrolling">
+                <div class="text-scrolling-animation">
+                    <div class="items">
+    <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                        <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                        <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                        <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                    </div>
+                    <div class="items">
+    <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                        <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                        <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                        <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                    </div>
+                    <div class="items">
+    <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                        <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                        <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                        <span>
+        <strong class="stroke">Detect</strong> <b>Water</b> Body
+        <img src="{{ url_for('static', filename='img/animated-icon/vector-white.png') }}" alt=""/>
+    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- infinite scrolling end -->
+
+
+<!-- footer credit -->
+<div class="footer-credit">
+    <div class="container">
+        <div class="copy-right text-center">
+            Copyright © 2025 zjs</a>
+        </div>
+    </div>
+</div>
+<!-- footer credit end -->
+
+<!-- back to top -->
+<div class="scroll active-scroll">
+    <svg
+            class="scroll__circle svg-content"
+            width="100%"
+            height="100%"
+            viewBox="-1 -1 102 102"
+    >
+        <path
+                d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"
+                style="
+						transition: stroke-dashoffset 10ms linear 0s;
+						stroke-dasharray: 307.919px, 307.919px;
+						stroke-dashoffset: 244.073px;
+					"
+        ></path>
+    </svg>
+</div>
+<!-- back to top end -->
+
+<!-- all jquery plugins here -->
+<!-- jquery -->
+<script src="{{ url_for('static', filename='js/Jquery-3.7.0.js') }}"></script>
+<!-- bootstrap- jquery included -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- slick slider- jquery included -->
+<script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- niceselect - jquery included -->
+<script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+<!-- imageloaded pkgd - jquery included -->
+<script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}"></script>
+<!-- appear - jquery included -->
+<script src="{{ url_for('static', filename='js/appear.min.js') }}"></script>
+<!-- modal video - jquery included -->
+<script src="{{ url_for('static', filename='js/jquery-modal-video.min.js') }}"></script>
+<!-- meamenu - jquery inclued -->
+<script src="{{ url_for('static', filename='js/jquery.meanmenu.min.js') }}"></script>
+<!-- video js - jquery included -->
+<script src="{{ url_for('static', filename='js/video.js') }}"></script>
+<!-- cursor js - jquery included -->
+<script src="{{ url_for('static', filename='js/cursor.js') }}"></script>
+<!-- main js -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<script>
+    function changeImage(thumbnail) {
+        var newImageSrc = thumbnail.src;
+        var mainImage = document.getElementById('big-image');
+        mainImage.src = newImageSrc;
+    }
+</script>
+</body>
+</html>

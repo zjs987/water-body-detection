@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HydrpNet——Water Body Extraction System for Remote Sensing Images">
+    <meta name="keywords" content="HydrpNet——Water Body Extraction System for Remote Sensing Images">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Insomniacafe">
+    <title>Detection History - HydrpNet Water Body Extraction System</title>
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo/favicon.ico') }}">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- normalize css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <!-- slick slider css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css') }}">
+    <!-- cursor css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cursor.css') }}">
+    <!-- animate css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
+    <!-- Nice select css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}">
+    <!-- fontawesome css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome.min.css') }}">
+    <!-- modal video css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal-video.min.css') }}">
+    <!-- popup video css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/video-css.css') }}">
+    <!-- meanmenu css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/meanmenu.min.css') }}">
+    <!-- style css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .detection-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        .detection-card:hover {
+            transform: translateY(-5px);
+        }
+        .detection-image {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .detection-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .single-badge {
+            background-color: #28a745;
+            color: white;
+        }
+        .comparison-badge {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .detection-info {
+            padding: 15px;
+            position: relative;
+        }
+        .detection-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .detection-date {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .detection-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .filter-bar {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body class="page-template">
+    <!-- Navigation back button -->
+    <div class="header__right">
+        <div class="header__right--btn">
+            <a class="signup" href="/upload">Back <i class="fa-thin fa-arrow-right"></i></a>
+        </div>
+        <button class="menu-icon d-md-block d-lg-none">
+            <i class="fa-sharp fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h2 class="text-center">Detection History</h2>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select class="form-control" id="typeFilter">
+                            <option value="all">All Types</option>
+                            <option value="single">Single Image Analysis</option>
+                            <option value="comparison">Multi-Image Comparison</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select class="form-control" id="timeFilter">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="searchInput">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="recordsContainer">
+            {% if records %}
+                {% for record in records %}
+                <div class="col-md-4 mb-4 record-item" 
+                     data-type="{{ record.record_type }}" 
+                     data-date="{{ record.created_at.strftime('%Y-%m-%d') }}">
+                    <div class="detection-card position-relative">
+                        {% if record.record_type == 'single' %}
+                            {% if record.original_filename %}
+                                <img src="{{ url_for('main.send_original_image', filename=record.original_filename) }}"
+                                     class="detection-image"
+                                     alt="Original Image">
+                                <span class="detection-badge single-badge">Single Image Analysis</span>
+                            {% else %}
+                                <img src="{{ url_for('static', filename='img/placeholder.png') }}"
+                                     class="detection-image"
+                                     alt="No Image">
+                            {% endif %}
+                        {% else %}
+                            {% if record.before_filename %}
+                                <img src="{{ url_for('main.send_original_image', filename=record.before_filename) }}"
+                                     class="detection-image"
+                                     alt="Before Image">
+                                <span class="detection-badge comparison-badge">Multi-Image Comparison</span>
+                            {% else %}
+                                <img src="{{ url_for('static', filename='img/placeholder.png') }}"
+                                     class="detection-image"
+                                     alt="No Image">
+                            {% endif %}
+                        {% endif %}
+
+                        <div class="detection-info">
+                            <div class="detection-title">
+                                {{ record.original_filename or record.before_filename or 'Unnamed Detection' }}
+                            </div>
+                            <div class="detection-date">
+                                <i class="far fa-calendar-alt"></i>
+                                {{ record.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            </div>
+                            <div class="detection-actions">
+                                <a href="{{ url_for('main.view_record', record_id=record.id) }}"
+                                   class="btn btn-primary btn-sm">
+                                    View Details
+                                </a>
+                                <button class="btn btn-danger btn-sm delete-record"
+                                        data-id="{{ record.id }}">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <p>No detection records found.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/Jquery-3.7.0.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // 类型筛选
+            $('#typeFilter').on('change', function() {
+                const selectedType = $(this).val();
+                filterRecords();
+            });
+
+            // 时间筛选
+            $('#timeFilter').on('change', function() {
+                const selectedTimeRange = $(this).val();
+                filterRecords();
+            });
+
+            // 搜索功能
+            $('#searchInput').on('keyup', function() {
+                filterRecords();
+            });
+
+            // 记录筛选函数
+            function filterRecords() {
+                const selectedType = $('#typeFilter').val();
+                const selectedTimeRange = $('#timeFilter').val();
+                const searchText = $('#searchInput').val().toLowerCase();
+                const today = new Date();
+
+                $('.record-item').each(function() {
+                    const recordType = $(this).data('type');
+                    const recordDate = new Date($(this).data('date'));
+                    const recordText = $(this).text().toLowerCase();
+
+                    // 类型筛选
+                    const typeMatch = selectedType === 'all' || recordType === selectedType;
+
+                    // 时间筛选
+                    let timeMatch = true;
+                    if (selectedTimeRange !== 'all') {
+                        switch(selectedTimeRange) {
+                            case 'today':
+                                timeMatch = recordDate.toDateString() === today.toDateString();
+                                break;
+                            case 'week':
+                                const weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+                                timeMatch = recordDate >= weekStart;
+                                break;
+                            case 'month':
+                                timeMatch = recordDate.getMonth() === today.getMonth() && 
+                                           recordDate.getFullYear() === today.getFullYear();
+                                break;
+                        }
+                    }
+
+                    // 搜索筛选
+                    const searchMatch = searchText === '' || recordText.includes(searchText);
+
+                    // 综合判断是否显示
+                    $(this).toggle(typeMatch && timeMatch && searchMatch);
+                });
+            }
+
+            // 删除记录
+            $('.delete-record').on('click', function() {
+                const recordId = $(this).data('id');
+                if(confirm('Are you sure you want to delete this record?')) {
+                    window.location.href = `/history/delete/${recordId}`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

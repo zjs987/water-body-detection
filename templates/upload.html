@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HydrpNet——Water Body Extraction System for Remote Sensing Images">
+    <meta name="keywords" content="HydrpNet——Water Body Extraction System for Remote Sensing Images">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Insomniacafe">
+    <title>HydrpNet——Water Body Extraction System for Remote Sensing Images</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Original stylesheets -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cursor.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal-video.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/video-css.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/meanmenu.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .custom-file-upload {
+            border: 2px dashed #2a4fa9;
+            border-radius: 10px;
+            background-color: rgba(42, 79, 169, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .custom-file-upload:hover {
+            background-color: rgba(42, 79, 169, 0.15);
+        }
+
+        .custom-file-upload.dragover {
+            background-color: rgba(42, 79, 169, 0.2);
+            border-color: #3a6ac5;
+        }
+
+        .upload-title {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .btn-gradient-primary {
+            background: linear-gradient(45deg, #2a4fa9, #4e7ae3);
+            border: none;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-primary:hover {
+            background: linear-gradient(45deg, #4e7ae3, #2a4fa9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 79, 169, 0.3);
+        }
+
+        .selected-file {
+            color: white;
+            padding: 15px;
+        }
+
+        .upload-section-heading {
+            background-color: #2a4fa9;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .image-preview {
+            height: 120px;
+            width: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 2px solid #fff;
+        }
+
+        /* Mode selection toggle */
+        .mode-selector {
+            background-color: rgba(42, 79, 169, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .mode-card {
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .mode-card.active {
+            border-color: #2a4fa9;
+            background-color: rgba(42, 79, 169, 0.2);
+            box-shadow: 0 5px 15px rgba(42, 79, 169, 0.2);
+        }
+
+        .mode-card:hover:not(.active) {
+            background-color: rgba(42, 79, 169, 0.1);
+        }
+
+        .mode-icon {
+            font-size: 2rem;
+            color: #4e7ae3;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body class="page-template">
+<!-- Navigation back button -->
+<div class="header__right">
+    <div class="header__right--btn">
+        <a class="signup" href="/index">Back <i class="fa-thin fa-arrow-left"></i></a>
+    </div>
+</div>
+
+<!-- Main content container -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card dark-upload-card shadow-lg">
+                <div class="card-header py-4" style="background-color: #2a4fa9">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="/history" class="btn btn-outline-light btn-sm">
+                                <i class="fas fa-history mr-1"></i>View History
+                            </a>
+                        </div>
+                        <h4 class="mb-0 text-white">
+                            <i class="fas fa-satellite mr-2"></i>Water Body Analysis
+                        </h4>
+                        <div style="width: 100px;"></div> <!-- 用于平衡布局的空元素 -->
+                    </div>
+                </div>
+                <div class="card-body px-5 py-4" style="background: transparent">
+                    <!-- Mode Selection Section -->
+                    <div class="mode-selector">
+                        <h5 class="text-white text-center mb-3">Select Analysis Mode</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="mode-card text-center active" id="singleImageMode"
+                                     onclick="switchMode('single')">
+                                    <div class="mode-icon">
+                                        <i class="fas fa-image"></i>
+                                    </div>
+                                    <h6 class="text-white">Single Image Analysis</h6>
+                                    <p class="text-muted small mb-0">Extract water bodies from a single image</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mode-card text-center" id="comparisonMode"
+                                     onclick="switchMode('comparison')">
+                                    <div class="mode-icon">
+                                        <i class="fas fa-images"></i>
+                                    </div>
+                                    <h6 class="text-white">Before & After Comparison</h6>
+                                    <p class="text-muted small mb-0">Compare water bodies between two images</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Single Image Form -->
+                    <form id="singleUploadForm" enctype="multipart/form-data" style="display: block;">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8 mb-4">
+                                <div class="upload-section-heading text-center">
+                                    <i class="fas fa-image mr-2"></i> Upload Image
+                                </div>
+                                <div class="custom-file-upload rounded-lg"
+                                     id="singleImageDropzone"
+                                     ondrop="dropHandler(event, 'single')"
+                                     ondragover="dragOverHandler(event)"
+                                     ondragleave="dragLeaveHandler(event)">
+                                    <input type="file" id="singleImageInput" name="file" accept="image/*" hidden
+                                           required>
+                                    <div class="upload-content text-center p-4" id="singleImageContent">
+                                        <div class="upload-icon mb-3">
+                                            <i class="fas fa-cloud-upload-alt fa-2x text-info"></i>
+                                        </div>
+                                        <h6 class="font-weight-bold mb-2 text-white">Drag & Drop</h6>
+                                        <p class="text-muted mb-2">or</p>
+                                        <label for="singleImageInput"
+                                               class="btn btn-gradient-primary px-3 rounded-pill btn-sm">
+                                            <i class="fas fa-folder-open mr-1"></i>Browse Files
+                                        </label>
+                                        <p class="text-muted small mt-2 mb-0">JPG, PNG, TIFF (Max: 50MB)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings for single image -->
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <div class="accordion" id="singleSettingsAccordion">
+                                    <div class="card bg-transparent border-0">
+                                        <div class="card-header bg-transparent border-0 p-0">
+                                            <button class="btn btn-link btn-block text-left text-white collapsed"
+                                                    type="button" data-toggle="collapse"
+                                                    data-target="#singleAdvancedSettings">
+                                                <i class="fas fa-cog mr-2"></i> Advanced Settings
+                                            </button>
+                                        </div>
+                                        <div id="singleAdvancedSettings" class="collapse"
+                                             data-parent="#singleSettingsAccordion">
+                                            <div class="card-body text-white">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="singleProcessType">Processing Method</label>
+                                                            <select class="form-control" id="singleProcessType"
+                                                                    name="processType">
+                                                                <option value="unet" selected>UNet (Default)</option>
+                                                                <option value="grayscale">Grayscale</option>
+                                                                <option value="edge_detection">Edge Detection</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="singleLevels">Grayscale Levels</label>
+                                                            <input type="number" class="form-control" id="singleLevels"
+                                                                   name="levels" value="8" min="2" max="256">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="singleSpatialResolution">Spatial Resolution
+                                                                (m/pixel)</label>
+                                                            <input type="number" class="form-control"
+                                                                   id="singleSpatialResolution" name="spatialResolution"
+                                                                   value="1.0" step="0.1" min="0.1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="singleWaterThreshold">Water Threshold
+                                                                Level</label>
+                                                            <input type="number" class="form-control"
+                                                                   id="singleWaterThreshold" name="waterThreshold"
+                                                                   value="1" min="0">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="button" onclick="uploadSingleImage()"
+                                    class="btn btn-lg btn-gradient-primary px-5 rounded-pill">
+                                <i class="fas fa-rocket mr-2"></i>Start Analysis
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Comparison Image Form -->
+                    <form id="comparisonUploadForm" enctype="multipart/form-data" style="display: none;">
+                        <div class="row">
+                            <!-- Before Image Section -->
+                            <div class="col-md-6 mb-4">
+                                <div class="upload-section-heading text-center">
+                                    <i class="fas fa-history mr-2"></i> Before Image
+                                </div>
+                                <div class="custom-file-upload rounded-lg"
+                                     id="beforeImageDropzone"
+                                     ondrop="dropHandler(event, 'before')"
+                                     ondragover="dragOverHandler(event)"
+                                     ondragleave="dragLeaveHandler(event)">
+                                    <input type="file" id="beforeImageInput" name="before_image" accept="image/*" hidden
+                                           required>
+                                    <div class="upload-content text-center p-4" id="beforeImageContent">
+                                        <div class="upload-icon mb-3">
+                                            <i class="fas fa-cloud-upload-alt fa-2x text-info"></i>
+                                        </div>
+                                        <h6 class="font-weight-bold mb-2 text-white">Drag & Drop</h6>
+                                        <p class="text-muted mb-2">or</p>
+                                        <label for="beforeImageInput"
+                                               class="btn btn-gradient-primary px-3 rounded-pill btn-sm">
+                                            <i class="fas fa-folder-open mr-1"></i>Browse Files
+                                        </label>
+                                        <p class="text-muted small mt-2 mb-0">JPG, PNG, TIFF (Max: 50MB)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- After Image Section -->
+                            <div class="col-md-6 mb-4">
+                                <div class="upload-section-heading text-center">
+                                    <i class="fas fa-clock mr-2"></i> After Image
+                                </div>
+                                <div class="custom-file-upload rounded-lg"
+                                     id="afterImageDropzone"
+                                     ondrop="dropHandler(event, 'after')"
+                                     ondragover="dragOverHandler(event)"
+                                     ondragleave="dragLeaveHandler(event)">
+                                    <input type="file" id="afterImageInput" name="after_image" accept="image/*" hidden
+                                           required>
+                                    <div class="upload-content text-center p-4" id="afterImageContent">
+                                        <div class="upload-icon mb-3">
+                                            <i class="fas fa-cloud-upload-alt fa-2x text-info"></i>
+                                        </div>
+                                        <h6 class="font-weight-bold mb-2 text-white">Drag & Drop</h6>
+                                        <p class="text-muted mb-2">or</p>
+                                        <label for="afterImageInput"
+                                               class="btn btn-gradient-primary px-3 rounded-pill btn-sm">
+                                            <i class="fas fa-folder-open mr-1"></i>Browse Files
+                                        </label>
+                                        <p class="text-muted small mt-2 mb-0">JPG, PNG, TIFF (Max: 50MB)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings for comparison -->
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <div class="accordion" id="comparisonSettingsAccordion">
+                                    <div class="card bg-transparent border-0">
+                                        <div class="card-header bg-transparent border-0 p-0">
+                                            <button class="btn btn-link btn-block text-left text-white collapsed"
+                                                    type="button" data-toggle="collapse"
+                                                    data-target="#comparisonAdvancedSettings">
+                                                <i class="fas fa-cog mr-2"></i> Advanced Settings
+                                            </button>
+                                        </div>
+                                        <div id="comparisonAdvancedSettings" class="collapse"
+                                             data-parent="#comparisonSettingsAccordion">
+                                            <div class="card-body text-white">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="comparisonProcessType">Processing Method</label>
+                                                            <select class="form-control" id="comparisonProcessType"
+                                                                    name="processType">
+                                                                <option value="unet" selected>UNet (Default)</option>
+                                                                <option value="grayscale">Grayscale</option>
+                                                                <option value="edge_detection">Edge Detection</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="comparisonLevels">Grayscale Levels</label>
+                                                            <input type="number" class="form-control"
+                                                                   id="comparisonLevels" name="levels" value="8" min="2"
+                                                                   max="256">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="comparisonSpatialResolution">Spatial Resolution
+                                                                (m/pixel)</label>
+                                                            <input type="number" class="form-control"
+                                                                   id="comparisonSpatialResolution"
+                                                                   name="spatialResolution" value="1.0" step="0.1"
+                                                                   min="0.1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="comparisonWaterThreshold">Water Threshold
+                                                                Level</label>
+                                                            <input type="number" class="form-control"
+                                                                   id="comparisonWaterThreshold" name="waterThreshold"
+                                                                   value="1" min="0">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="button" onclick="uploadComparisonImages()"
+                                    class="btn btn-lg btn-gradient-primary px-5 rounded-pill">
+                                <i class="fas fa-rocket mr-2"></i>Start Comparison
+                            </button>
+                        </div>
+                    </form>
+                    <div class="mt-3" id="uploadStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Current selected mode
+    let currentMode = 'single'; // Default to single image mode
+
+    // Mode switching
+    function switchMode(mode) {
+        currentMode = mode;
+
+        // Update UI
+        if (mode === 'single') {
+            document.getElementById('singleImageMode').classList.add('active');
+            document.getElementById('comparisonMode').classList.remove('active');
+            document.getElementById('singleUploadForm').style.display = 'block';
+            document.getElementById('comparisonUploadForm').style.display = 'none';
+        } else {
+            document.getElementById('singleImageMode').classList.remove('active');
+            document.getElementById('comparisonMode').classList.add('active');
+            document.getElementById('singleUploadForm').style.display = 'none';
+            document.getElementById('comparisonUploadForm').style.display = 'block';
+        }
+
+        // Clear any previous upload status
+        document.getElementById('uploadStatus').innerHTML = '';
+    }
+
+    // Drag and drop handlers
+    function dragOverHandler(e) {
+        e.preventDefault();
+        e.target.closest('.custom-file-upload').classList.add('dragover');
+    }
+
+    function dragLeaveHandler(e) {
+        e.preventDefault();
+        e.target.closest('.custom-file-upload').classList.remove('dragover');
+    }
+
+    function dropHandler(e, type) {
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+
+        let inputId;
+        switch (type) {
+            case 'single':
+                inputId = 'singleImageInput';
+                break;
+            case 'before':
+                inputId = 'beforeImageInput';
+                break;
+            case 'after':
+                inputId = 'afterImageInput';
+                break;
+        }
+
+        document.getElementById(inputId).files = files;
+        e.target.closest('.custom-file-upload').classList.remove('dragover');
+        showSelectedFile(files[0], type);
+    }
+
+    // File selection handlers
+    document.getElementById('singleImageInput').addEventListener('change', function (e) {
+        showSelectedFile(e.target.files[0], 'single');
+    });
+
+    document.getElementById('beforeImageInput').addEventListener('change', function (e) {
+        showSelectedFile(e.target.files[0], 'before');
+    });
+
+    document.getElementById('afterImageInput').addEventListener('change', function (e) {
+        showSelectedFile(e.target.files[0], 'after');
+    });
+
+    function showSelectedFile(file, type) {
+        if (file) {
+            let contentElementId;
+            switch (type) {
+                case 'single':
+                    contentElementId = 'singleImageContent';
+                    break;
+                case 'before':
+                    contentElementId = 'beforeImageContent';
+                    break;
+                case 'after':
+                    contentElementId = 'afterImageContent';
+                    break;
+            }
+
+            const contentElement = document.getElementById(contentElementId);
+
+            // Create a temporary URL for the selected image
+            const imgUrl = URL.createObjectURL(file);
+
+            contentElement.innerHTML = `
+                    <div class="selected-file animate__animated animate__fadeIn">
+                        <i class="fas fa-file-image fa-2x text-success mb-2"></i>
+                        <h6 class="font-weight-bold">${file.name}</h6>
+                        <p class="text-muted small mb-2">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                        <img src="${imgUrl}" class="image-preview">
+                    </div>
+                `;
+        }
+    }
+
+    // Upload function for single image
+    function uploadSingleImage() {
+        const singleImageInput = document.getElementById('singleImageInput');
+        const uploadStatus = document.getElementById('uploadStatus');
+
+        // Validate input
+        if (!singleImageInput.files[0]) {
+            uploadStatus.innerHTML = '<div class="alert alert-danger">Please select an image to upload</div>';
+            return;
+        }
+
+        // Validate file size
+        const maxSize = 50 * 1024 * 1024; // 50MB
+        if (singleImageInput.files[0].size > maxSize) {
+            uploadStatus.innerHTML = '<div class="alert alert-danger">File size exceeds 50MB limit</div>';
+            return;
+        }
+
+        // Create form data
+        const formData = new FormData();
+
+        // Add the file
+        formData.append('file', singleImageInput.files[0]);
+
+        // Add advanced settings
+        formData.append('processType', document.getElementById('singleProcessType').value);
+        formData.append('levels', document.getElementById('singleLevels').value);
+        formData.append('spatialResolution', document.getElementById('singleSpatialResolution').value);
+        formData.append('waterThreshold', document.getElementById('singleWaterThreshold').value);
+
+        // Show loading indicator
+        uploadStatus.innerHTML = `
+                <div class="alert alert-info d-flex align-items-center">
+                    <div class="spinner-border spinner-border-sm mr-3" role="status"></div>
+                    Processing image, this may take 15-20 seconds...
+                </div>
+            `;
+
+        // Send to server
+        fetch('/upload_file', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    uploadStatus.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+                    return;
+                }
+
+                // Store results and redirect
+                sessionStorage.setItem('processResult', JSON.stringify(data));
+                window.location.href = '/result';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                uploadStatus.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Upload failed: ${error.message || 'Network error'}
+                    </div>
+                `;
+            });
+    }
+
+    // Upload function for comparison images
+    function uploadComparisonImages() {
+        const beforeImageInput = document.getElementById('beforeImageInput');
+        const afterImageInput = document.getElementById('afterImageInput');
+        const uploadStatus = document.getElementById('uploadStatus');
+
+        // Validate inputs
+        if (!beforeImageInput.files[0] || !afterImageInput.files[0]) {
+            uploadStatus.innerHTML = '<div class="alert alert-danger">Please select both before and after images</div>';
+            return;
+        }
+
+        // Validate file sizes
+        const maxSize = 50 * 1024 * 1024; // 50MB
+        if (beforeImageInput.files[0].size > maxSize || afterImageInput.files[0].size > maxSize) {
+            uploadStatus.innerHTML = '<div class="alert alert-danger">File size exceeds 50MB limit</div>';
+            return;
+        }
+
+        // Create form data
+        const formData = new FormData();
+
+        // Add files
+        formData.append('before_image', beforeImageInput.files[0]);
+        formData.append('after_image', afterImageInput.files[0]);
+
+        // Add advanced settings
+        formData.append('processType', document.getElementById('comparisonProcessType').value);
+        formData.append('levels', document.getElementById('comparisonLevels').value);
+        formData.append('spatialResolution', document.getElementById('comparisonSpatialResolution').value);
+        formData.append('waterThreshold', document.getElementById('comparisonWaterThreshold').value);
+
+        // Show loading indicator
+        uploadStatus.innerHTML = `
+                <div class="alert alert-info d-flex align-items-center">
+                    <div class="spinner-border spinner-border-sm mr-3" role="status"></div>
+                    Processing images, this may take 20-30 seconds...
+                </div>
+            `;
+
+        // Send to server
+        fetch('/upload_comparison', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    uploadStatus.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+                    return;
+                }
+
+                // Store results and redirect
+                sessionStorage.setItem('comparisonResult', JSON.stringify(data));
+                window.location.href = '/comparison_result';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                uploadStatus.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Upload failed: ${error.message || 'Network error'}
+                    </div>
+                `;
+            });
+    }
+</script>
+
+<!-- JavaScript libraries -->
+<script src="{{ url_for('static', filename='js/Jquery-3.7.0.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/appear.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-modal-video.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.meanmenu.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/video.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cursor.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta
+            name="description"
+            content="HydrpNet: Water Body Extraction System for Remote Sensing Images"
+    />
+    <meta
+            name="keywords"
+            content="HydrpNet: Water Body Extraction System for Remote Sensing Images"
+    />
+    <meta name="robots" content="index, follow"/>
+    <meta name="author" content="Insomniacafe"/>
+
+    <title>
+        HydrpNet: Water Body Extraction System for Remote Sensing Images
+    </title>
+    <title>InsoAi - AI Writing, Video, and Image Generator HTML5 Template</title>
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo/favicon.ico') }}">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- normalize css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <!-- slick slider css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css') }}">
+    <!-- cursor css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cursor.css') }}">
+    <!-- animate css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
+    <!-- Nice select css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}">
+    <!-- fontawesome css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome.min.css') }}">
+    <!-- modal video css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal-video.min.css') }}">
+    <!-- popup video css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/video-css.css') }}">
+    <!-- meanmenu css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/meanmenu.min.css') }}">
+    <!-- style css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Include Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Include html2pdf.js for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>
+/* 只添加新的样式，不修改已有样式 */
+.analysis-section {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.analysis-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    margin-bottom: 1.5rem;
+}
+
+.analysis-card-header {
+    background: rgba(0, 0, 0, 0.2);
+    color: #ecf0f1;
+    padding: 1.25rem;
+    font-size: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.analysis-card-header i {
+    margin-right: 10px;
+    color: #3498db;
+}
+
+.upload-box {
+    background: rgba(0, 0, 0, 0.15);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.upload-box:hover {
+    border-color: #3498db;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.upload-label {
+    color: #bdc3c7;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.upload-label:hover {
+    color: #3498db;
+}
+
+.preview-container {
+    min-height: 150px;
+}
+
+.form-select, .form-control {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ecf0f1 !important;
+}
+
+.form-select:focus, .form-control:focus {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+.btn-primary {
+    background: #3498db;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+.glow-effect {
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.image-comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.comparison-item {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.result-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.analysis-report {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.report-content {
+    color: #bdc3c7;
+    line-height: 1.8;
+}
+
+.loading {
+    color: #ecf0f1 !important;
+}
+
+.error-message {
+    background: rgba(231, 76, 60, 0.15);
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    border-radius: 8px;
+}
+
+/* 新增对齐和颜色样式 */
+.model-selector .form-label {
+    color: #bdc3c7 !important; /* 标签保持浅色 */
+    min-width: 160px; /* 固定标签宽度 */
+    margin-bottom: 0 !important;
+}
+
+/* 仅添加新的动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 悬停效果 */
+.upload-card:hover {
+    transform: translateY(-5px);
+    border-color: #3498db !important;
+    background: rgba(52, 152, 219, 0.05);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.loading {
+    display: none;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+.result-container {
+    display: none;
+    margin-top: 20px;
+}
+
+.image-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.image-container div {
+    width: 48%;
+}
+
+.image-container img {
+    max-width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.error-message {
+    color: #dc3545;
+    margin-top: 10px;
+    display: none;
+}
+
+.model-selection {
+    margin-bottom: 20px;
+}
+
+/* Markdown styles */
+.report-content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.report-content h1 {
+    color: #e2e2e2;
+    font-size: 1.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.report-content h2 {
+    color: #3498db;
+    font-size: 1.5rem;
+    margin-top: 1.2rem;
+}
+
+.report-content h3 {
+    color: #27ae60;
+    font-size: 1.3rem;
+    margin-top: 1rem;
+}
+
+.report-content p {
+    margin-bottom: 1rem;
+}
+
+.report-content ul, .report-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.report-content li {
+    margin-bottom: 0.5rem;
+}
+
+.report-content strong {
+    color: #f1c40f;
+}
+
+.report-content em {
+    color: #e67e22;
+}
+
+.report-content hr {
+    border: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 1.5rem 0;
+}
+
+.report-content a {
+    color: #3498db;
+    text-decoration: none;
+    border-bottom: 1px dotted #3498db;
+}
+
+.report-content a:hover {
+    color: #2980b9;
+    border-bottom: 1px solid #2980b9;
+}
+
+/* PDF export button styles */
+.btn-export-pdf {
+    background: #e74c3c;
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    margin-left: 10px;
+}
+
+.btn-export-pdf:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+/* PDF styles */
+.pdf-content {
+    display: none;
+}
+
+.report-meta {
+    margin-bottom: 15px;
+    color: #bdc3c7;
+    font-style: italic;
+}
+/* PDF专用样式 */
+#reportForPdf {
+    color: #000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+#reportForPdf .report-title {
+    color: #000 !important;
+    font-size: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+}
+
+#reportForPdf .report-meta {
+    color: #666 !important;
+    margin: 2px 0 !important;
+    padding: 0 !important;
+    font-size: 10px !important;
+}
+
+#reportForPdf .image-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin: 5px 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+#reportForPdf .image-column {
+    width: 49% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#reportForPdf .image-caption {
+    color: #444 !important;
+    font-size: 10px !important;
+    margin: 2px 0 !important;
+}
+
+#reportForPdf .report-content {
+    color: #000 !important;
+    font-size: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#reportForPdf .report-content h1,
+#reportForPdf .report-content h2,
+#reportForPdf .report-content h3 {
+    margin: 4px 0 !important;
+    padding: 0 !important;
+}
+
+#reportForPdf .report-content p {
+    margin: 3px 0 !important;
+    padding: 0 !important;
+}
+
+#reportForPdf img {
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid #ddd !important;
+}
+</style>
+</head>
+<body class="page-template">
+
+<!-- header menu -->
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="header__wrapper">
+                <div class="header__logo" style="width: 400px; height: 100px;">
+                    <div style="display: inline-block; line-height: 100px;">
+                        <a href="index.html">
+                            <img src="{{ url_for('static', filename='img/logo/logo.png') }}" height="70px" alt="Logo"/>
+                        </a>
+                    </div>
+                    <div style="display: inline-block; line-height: 100px;">
+                        <a href="index.html" style="font-size: 40px; font-weight: bold;">HydroNet</a>
+                    </div>
+                </div>
+                <div class="header__menu">
+                    <nav Id="offcanvase__menu">
+                    </nav>
+                </div>
+                <div class="header__right">
+                    <div class="header__right--btn">
+                        <a class="signup" href="/index">Back <i class="fa-thin fa-arrow-right"></i></a>
+                    </div>
+                    <button class="menu-icon d-md-block d-lg-none">
+                        <i class="fa-sharp fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- header menu end -->
+<!-- breadcrumb -->
+<div class="inso-breadcrumb pt-90 pb-90">
+    <div class="container position-relative">
+        <div class="row">
+            <div class="inso-breadcrumb__images animated">
+                <img src="{{ url_for('static', filename='img/animated-icon/3-line.png') }}" alt="">
+                <img src="{{ url_for('static', filename='img/animated-icon/star-icon.png') }}" alt="">
+                <img src="{{ url_for('static', filename='img/animated-icon/trival.svg') }}" alt="">
+            </div>
+            <div class="col-12 text-center">
+                <div class="inso-breadcrumb__title">
+                    <h2 style="color: aliceblue;">Report Generation</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb end -->
+<!-- contact -->
+<div class="container mt-5">
+    <div class="analysis-section">
+        <!-- 上传卡片 -->
+        <div class="analysis-card shadow-lg">
+            <div class="analysis-card-header">
+                <i class="fas fa-satellite"></i> Satellite Image Analysis
+            </div>
+            <div class="analysis-card-body">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="upload-box">
+                                <label for="beforeImage" class="upload-label">
+                                    <i class="fas fa-file-upload fa-2x"></i>
+                                    <span class="d-block mt-2">Before Image</span>
+                                </label>
+                                <input class="form-control visually-hidden" type="file" id="beforeImage" name="before_image" accept="image/*" required>
+                                <div id="beforePreview" class="preview-container mt-3"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="upload-box">
+                                <label for="afterImage" class="upload-label">
+                                    <i class="fas fa-file-upload fa-2x"></i>
+                                    <span class="d-block mt-2">After Image</span>
+                                </label>
+                                <input class="form-control visually-hidden" type="file" id="afterImage" name="after_image" accept="image/*" required>
+                                <div id="afterPreview" class="preview-container mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="model-selector mb-4">
+                        <label class="form-label">
+                            <i class="fas fa-microchip" style="line-height: 40px"></i> AI Model Selection
+                        </label>
+<select style="background-color: #2c3e50; color: black; border: 1px solid #34495e; border-radius: 4px; padding: 8px 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none;" id="modelSelect" name="model">
+    <option value="gpt-4o" selected>GPT-4o (Recommended)</option>
+    <option value="gpt-4-turbo-2024-04-09">GPT-4 Turbo</option>
+    <option value="gpt-4-0125-preview">GPT-4 Preview</option>
+    <option value="gpt-4.5-preview">GPT-4.5 Preview</option>
+</select>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn-primary btn-lg glow-effect">
+                            <i class="fas fa-play-circle"></i> Start Analysis
+                        </button>
+                        <button type="button" id="testProxyBtn" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-plug"></i> Test Connection
+                        </button>
+                    </div>
+                </form>
+
+                <div class="error-message" id="errorMessage"></div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner-border text-light"></div>
+                    <p class="mt-3">Analyzing satellite data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果卡片 -->
+        <div class="result-container" id="resultContainer">
+            <div class="analysis-card shadow-lg">
+                <div class="analysis-card-header">
+                    <i class="fas fa-chart-bar"></i> Analysis Report
+                    <button id="exportPdfBtn" class="btn btn-export-pdf float-end">
+                        <i class="fas fa-file-pdf"></i> Export PDF
+                    </button>
+                </div>
+                <div class="analysis-card-body">
+                    <div class="image-comparison">
+                        <div class="comparison-item">
+                            <h5><i class="fas fa-calendar-minus"></i> Before</h5>
+                            <img id="beforeImageResult" class="result-image" src="" alt="Before">
+                        </div>
+                        <div class="comparison-item">
+                            <h5><i class="fas fa-calendar-plus"></i> After</h5>
+                            <img id="afterImageResult" class="result-image" src="" alt="After">
+                        </div>
+                    </div>
+
+                    <div class="analysis-report">
+                        <h4><i class="fas fa-file-alt"></i> Water Body Change Analysis</h4>
+                        <div class="report-meta">
+                            <span id="reportDate"></span> | <span id="reportModel"></span>
+                        </div>
+                        <div id="analysisResult" class="report-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="reportForPdf">
+    <div class="report-title">Water Body Change Analysis Report</div>
+    <div class="report-meta">
+        <div>Generated on <span id="pdfReportDate"></span> using <span id="pdfReportModel"></span></div>
+    </div>
+
+    <div class="image-row">
+        <div class="image-column">
+            <img id="pdfBeforeImage" src="" alt="Before Image">
+            <div class="image-caption">Before Image</div>
+        </div>
+        <div class="image-column">
+            <img id="pdfAfterImage" src="" alt="After Image">
+            <div class="image-caption">After Image</div>
+        </div>
+    </div>
+
+    <div id="pdfAnalysisResult" class="report-content"></div>
+</div>
+
+<!-- back to top -->
+<div class="scroll active-scroll">
+    <svg class="scroll__circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"
+              style="transition: stroke-dashoffset 10ms linear 0s; stroke-dasharray: 307.919px, 307.919px; stroke-dashoffset: 244.073px;">
+        </path>
+    </svg>
+</div>
+<!-- back to top end -->
+
+<!-- all jquery plugins here -->
+<!-- jquery -->
+<script src="{{ url_for('static', filename='js/Jquery-3.7.0.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ajax-contact.js') }}"></script>
+<!-- bootstrap- jquery included -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- slick slider- jquery included -->
+<script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- niceselect - jquery included -->
+<script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+<!-- imageloaded pkgd - jquery included -->
+<script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}"></script>
+<!-- appear - jquery included -->
+<script src="{{ url_for('static', filename='js/appear.min.js') }}"></script>
+<!-- modal video - jquery included -->
+<script src="{{ url_for('static', filename='js/jquery-modal-video.min.js') }}"></script>
+<!-- meamenu - jquery inclued -->
+<script src="{{ url_for('static', filename='js/jquery.meanmenu.min.js') }}"></script>
+<!-- video js - jquery included -->
+<script src="{{ url_for('static', filename='js/video.js') }}"></script>
+<!-- cursor js - jquery included -->
+<script src="{{ url_for('static', filename='js/cursor.js') }}"></script>
+<!-- ajax contact js -->
+<!-- main js -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // 预览上传的图片
+    function previewImage(input, previewDiv) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            previewDiv.style.background = '#f8f9fa';
+            previewDiv.style.borderRadius = '10px';
+
+            reader.onload = function (e) {
+                previewDiv.innerHTML = `
+                    <img src="${e.target.result}"
+                         style="max-width:100%;
+                                max-height:200px;
+                                border-radius:8px;
+                                box-shadow:0 3px 10px rgba(0,0,0,0.1);
+                                animation: fadeIn 0.5s ease">
+                `;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.getElementById('beforeImage').addEventListener('change', function () {
+        previewImage(this, document.getElementById('beforePreview'));
+    });
+
+    document.getElementById('afterImage').addEventListener('change', function () {
+        previewImage(this, document.getElementById('afterPreview'));
+    });
+
+    // Markdown 渲染函数
+    function renderMarkdown(text) {
+        if (!text) return '';
+
+        // 使用marked.js库来渲染Markdown
+        const renderer = new marked.Renderer();
+
+        // 配置marked选项
+        marked.setOptions({
+            renderer: renderer,
+            highlight: function(code, lang) {
+                return code;
+            },
+            pedantic: false,
+            gfm: true,
+            breaks: true,
+            sanitize: false,
+            smartypants: false,
+            xhtml: false
+        });
+
+        return marked.parse(text);
+    }
+
+    // 当前日期时间格式化函数
+    function formatDateTime() {
+        const now = new Date();
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        return now.toLocaleDateString('en-US', options);
+    }
+
+    // 提交表单
+    document.getElementById('uploadForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const loading = document.getElementById('loading');
+        const resultContainer = document.getElementById('resultContainer');
+        const errorMessage = document.getElementById('errorMessage');
+        const selectedModel = document.getElementById('modelSelect').value;
+
+        // 显示加载动画，隐藏结果和错误
+        loading.style.display = 'block';
+        resultContainer.style.display = 'none';
+        errorMessage.style.display = 'none';
+
+        fetch('/analyze', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || '请求失败');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 隐藏加载动画，显示结果
+                loading.style.display = 'none';
+                resultContainer.style.display = 'block';
+
+                // 显示图像
+                document.getElementById('beforeImageResult').src = '/' + data.before_image;
+                document.getElementById('afterImageResult').src = '/' + data.after_image;
+
+                // 设置PDF导出用的图像
+                document.getElementById('pdfBeforeImage').src = '/' + data.before_image;
+                document.getElementById('pdfAfterImage').src = '/' + data.after_image;
+
+                // 设置报告元数据
+                const reportDate = formatDateTime();
+                document.getElementById('reportDate').textContent = reportDate;
+                document.getElementById('reportModel').textContent = selectedModel;
+                document.getElementById('pdfReportDate').textContent = reportDate;
+                document.getElementById('pdfReportModel').textContent = selectedModel;
+
+                // 使用Markdown渲染分析结果
+                const analysisResult = document.getElementById('analysisResult');
+                analysisResult.innerHTML = renderMarkdown(data.analysis);
+
+                // 同时也为PDF准备内容
+                document.getElementById('pdfAnalysisResult').innerHTML = renderMarkdown(data.analysis);
+            })
+            .catch(error => {
+                // 隐藏加载动画，显示错误信息
+                loading.style.display = 'none';
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = `分析失败: ${error.message}`;
+            });
+    });
+
+   document.getElementById('exportPdfBtn').addEventListener('click', function() {
+    const element = document.getElementById('reportForPdf');
+
+    // 简化样式设置
+    element.style.display = 'block';
+    element.style.margin = '0';
+    element.style.padding = '0';
+    element.style.width = '100%';
+
+    // 确保分析结果已经正确复制到PDF容器中
+    const analysisResult = document.getElementById('analysisResult').innerHTML;
+    document.getElementById('pdfAnalysisResult').innerHTML = analysisResult;
+
+    const opt = {
+    margin:       0, // 完全消除页边距
+    filename:     'water_body_analysis_report.pdf',
+    image:        { type: 'jpeg', quality: 0.95 },
+    html2canvas:  {
+        scale: 2,
+        useCORS: true,
+        logging: true,
+        scrollY: 0, // 消除滚动偏移
+        ignoreElements: (element) => element.id === 'exportPdfBtn'
+    },
+    jsPDF:        {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait',
+        compress: true
+    }
+};
+
+// 在导出前强制重置样式
+element.style.padding = '0';
+element.style.margin = '0';
+document.querySelectorAll('#reportForPdf *').forEach(el => {
+    el.style.margin = '0 !important';
+    el.style.padding = '0 !important';
+});
+
+    // 显示导出进度
+    const errorMessage = document.getElementById('errorMessage');
+    errorMessage.style.display = 'block';
+    errorMessage.style.color = '#f39c12';
+    errorMessage.textContent = 'Generating PDF, please wait... ';
+
+    // 导出PDF
+    html2pdf().set(opt).from(element).save().then(() => {
+        // 恢复原始状态
+        element.style.display = 'none';
+        element.style.margin = '';
+        element.style.padding = '';
+        element.style.width = '';
+
+        errorMessage.style.color = '#2ecc71';
+        errorMessage.textContent = 'PDF export success';
+
+        // 3秒后隐藏消息
+        setTimeout(() => {
+            errorMessage.style.display = 'none';
+        }, 3000);
+    }).catch(error => {
+        element.style.display = 'none';
+        element.style.margin = '';
+        element.style.padding = '';
+        element.style.width = '';
+
+        errorMessage.style.color = '#e74c3c';
+        errorMessage.textContent = `Fail to export PDF: ${error.message}`;
+    });
+});
+    // 测试代理连接
+    document.getElementById('testProxyBtn').addEventListener('click', function () {
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.style.display = 'none';
+
+        fetch('/test_proxy')
+            .then(response => response.json())
+            .then(data => {
+                errorMessage.style.display = 'block';
+                if (data.status === 'success') {
+                    errorMessage.style.color = '#198754';
+                    errorMessage.textContent = '代理连接测试成功！';
+                } else {
+                    errorMessage.style.color = '#dc3545';
+                    errorMessage.textContent = `代理连接测试失败: ${data.message}`;
+                }
+            })
+            .catch(error => {
+                errorMessage.style.display = 'block';
+                errorMessage.style.color = '#dc3545';
+                errorMessage.textContent = `代理连接测试失败: ${error.message}`;
+            });
+    });
+
+    // 动态加载可用模型
+    fetch('/models')
+        .then(response => response.json())
+        .then(data => {
+            if (data.models && data.models.length > 0) {
+                const modelSelect = document.getElementById('modelSelect');
+                modelSelect.innerHTML = '';
+
+                data.models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model.id;
+                    option.textContent = model.name;
+                    if (model.id === 'gpt-4o') {
+                        option.selected = true;
+                    }
+                    modelSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('加载模型列表失败:', error);
+        });
+</script>
+
+
+<script>
+    // 仅修改预览功能增加动画
+    function previewImage(input, previewDiv) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            previewDiv.style.background = '#f8f9fa';
+            previewDiv.style.borderRadius = '10px';
+
+            reader.onload = function (e) {
+                previewDiv.innerHTML = `
+                    <img src="${e.target.result}"
+                         style="max-width:100%;
+                                max-height:200px;
+                                border-radius:8px;
+                                box-shadow:0 3px 10px rgba(0,0,0,0.1);
+                                animation: fadeIn 0.5s ease">
+                `;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+
+</body>
+</html>

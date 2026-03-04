@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HydrpNet——Water Body Extraction System for Remote Sensing Images">
+    <meta name="keywords" content="HydrpNet——Water Body Extraction System for Remote Sensing Images">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Insomniacafe">
+    <title>HydrpNet——Water Body Extraction System for Remote Sensing Images</title>
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo/favicon.ico') }}">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- normalize css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <!-- slick slider css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css') }}">
+    <!-- cursor css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cursor.css') }}">
+    <!-- animate css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
+    <!-- Nice select css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}">
+    <!-- fontawesome css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome.min.css') }}">
+    <!-- modal video css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal-video.min.css') }}">
+    <!-- popup video css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/video-css.css') }}">
+    <!-- meanmenu css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/meanmenu.min.css') }}">
+    <!-- style css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .top-title {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 1rem 0.5rem;
+        }
+
+        .top-title span {
+            font-style: italic;
+            font-size: 1.5rem;
+        }
+
+        @media all and (max-width: 479px) {
+            .mainSection {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                justify-content: space-around;
+                align-items: stretch;
+                align-content: stretch;
+                width: 100%;
+                height: 700px;
+                padding: 10px;
+            }
+
+            .bal-container {
+                margin: 10px 0;
+            }
+        }
+
+        @media all and (max-width: 599px) {
+            .mainSection {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                justify-content: space-around;
+                align-items: stretch;
+                align-content: stretch;
+                width: 100%;
+                height: 800px;
+                padding: 10px;
+            }
+
+            .bal-container {
+                margin: 10px 0;
+            }
+        }
+
+        @media all and (min-width: 480px) and (max-width: 768px) {
+            .mainSection {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                justify-content: space-around;
+                align-items: stretch;
+                align-content: stretch;
+                width: 100%;
+                height: 1000px;
+                padding: 10px;
+            }
+
+            .bal-container {
+                margin: 10px 0;
+            }
+        }
+
+        @media all and (min-width: 768px) and (max-width: 959px) {
+            .mainSection {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                justify-content: space-around;
+                align-items: stretch;
+                align-content: stretch;
+                width: 100%;
+                height: 1100px;
+                padding: 10px;
+            }
+
+            .bal-container {
+                margin: 10px 0;
+            }
+        }
+
+        @media all and (min-width: 960px) and (max-width: 1199px) {
+            .mainSection {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-around;
+                align-items: stretch;
+                align-content: stretch;
+                width: 100%;
+                height: 500px;
+                padding: 10px;
+            }
+
+            .bal-container {
+                margin: 0 10px;
+            }
+        }
+
+        @media all and (min-width: 1199px) {
+            .mainSection {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-around;
+                align-items: stretch;
+                align-content: stretch;
+                width: 100%;
+                height: 500px;
+                padding: 10px;
+            }
+
+            .bal-container {
+                margin: 0 10px;
+            }
+        }
+
+
+        /* Before After Container */
+
+        .bal-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .bal-after {
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .bal-before {
+            display: block;
+            position: absolute;
+            top: 0;
+            /* right: 0; */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 15;
+            overflow: hidden;
+        }
+
+        .bal-before-inset {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .bal-after img,
+        .bal-before img {
+            object-fit: cover;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-position: 50% 50%;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        .bal-beforePosition {
+            background: #121212;
+            color: #fff;
+            left: 0;
+            pointer-events: none;
+            border-radius: 0.2rem;
+            padding: 2px 10px;
+        }
+
+        .bal-afterPosition {
+            background: #121212;
+            color: #fff;
+            right: 0;
+            pointer-events: none;
+            border-radius: 0.2rem;
+            padding: 2px 10px;
+        }
+
+        .beforeLabel {
+            position: absolute;
+            bottom: 0;
+            margin: 1rem;
+            font-size: 1em;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        .afterLabel {
+            position: absolute;
+            bottom: 0;
+            margin: 1rem;
+            font-size: 1em;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+
+        /* handle and arrow */
+
+        .bal-handle {
+            height: 41px;
+            width: 41px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -20px;
+            margin-top: -21px;
+            border: 2px solid #fff;
+            border-radius: 1000px;
+            z-index: 20;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgb(12, 12, 12);
+        }
+
+        .handle-left-arrow,
+        .handle-right-arrow {
+            width: 0;
+            height: 0;
+            border: 6px inset transparent;
+            position: absolute;
+            top: 50%;
+            margin-top: -6px;
+        }
+
+        .handle-left-arrow {
+            border-right: 6px solid #fff;
+            left: 50%;
+            margin-left: -17px;
+        }
+
+        .handle-right-arrow {
+            border-left: 6px solid #fff;
+            right: 50%;
+            margin-right: -17px;
+        }
+
+        .bal-handle::before {
+            bottom: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgb(12, 12, 12);
+        }
+
+        .bal-handle::after {
+            top: 50%;
+            margin-top: 20.5px;
+            box-shadow: 0 0 5px rgb(12, 12, 12);
+        }
+
+        .bal-handle::before,
+        .bal-handle::after {
+            content: " ";
+            display: block;
+            width: 2px;
+            background: #fff;
+            height: 9999px;
+            position: absolute;
+            left: 50%;
+            margin-left: -1.5px;
+        }
+
+    </style>
+</head>
+
+<body class="page-template">
+<!-- preloader -->
+
+<div class="header__right">
+    <div class="header__right--btn">
+
+        <a class="signup" href="/upload"
+        >Back <i class="fa-thin fa-arrow-left"></i
+        ></a>
+    </div>
+    <button class="menu-icon d-md-block d-lg-none">
+        <i class="fa-sharp fa-solid fa-bars"></i>
+    </button>
+</div>
+<div class="service style-three pt-110 pb-80">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-30">
+                <div class="advantage__single">
+                    <a href="/statistics" class="border-btn"><i class="fa-light fa-arrow-right-long"></i></a>
+                    <div class="icon"><i class="fa-regular fa-video"></i></div>
+                    <div class="content">
+                        <h5>Data Statistics</h5>
+                        <p>Provides comprehensive statistical analysis of water body data, including various metrics and
+                            trends.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-30">
+                <div class="advantage__single">
+                    <a href="/analyze" class="border-btn"><i class="fa-light fa-arrow-right-long"></i></a>
+                    <div class="icon"><i class="fa-light fa-film"></i></div>
+                    <div class="content">
+                        <h5>Report Generation</h5>
+                        <p>Allows users to generate detailed reports based on the detected water bodies and analysis
+                            results.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-30">
+                <div class="advantage__single">
+                    <a href="/upload" class="border-btn"><i class="fa-light fa-arrow-right-long"></i></a>
+                    <div class="icon"><i class="fa-regular fa-play"></i></div>
+                    <div class="content">
+                        <h5>Re-detect</h5>
+                        <p>Enables users to upload new images or data for real-time water body detection and
+                            analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="funfact">
+    <div class="container">
+        <h1>Image processing result</h1>
+        <div class="mainSection" style="width: 50%; margin-left: 325px">
+            <div id="one" class="bal-container" style="width: 100%; height: auto; position: relative;">
+                <div class="bal-after" style="display: inline-block; width: auto; height: auto;">
+                    <img class="after-processed-img mb-3"
+                         style="display: block; width: 100%; height: auto; object-fit: contain;">
+                    <div class="bal-afterPosition afterLabel">
+                        After Processed
+                    </div>
+                </div>
+                <div class="bal-before" style="display: inline-block; width: auto; height: auto;">
+                    <div class="bal-before-inset">
+                        <img class="before-processed-img mb-3"
+                             style="display: block; width: 100%; height: auto; object-fit: contain;">
+                        <div class="bal-beforePosition beforeLabel">
+                            Before Processed
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bal-handle">
+                    <span class="handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="container mt-4">
+            <!-- Before Images Section -->
+            <h3 class="text-center mb-4">Before Images</h3>
+            <div class="row">
+                <div class="col-lg-6 mb-30">
+                    <div class="benifit__single">
+                        <div class="benifit__thumb">
+                            <img class="before-original-img mb-3">
+                        </div>
+                        <div class="content" style="text-align: center; height: 30px; font-size: 30px">
+                            <h6 style="margin-top: -13px">Before Original</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-30">
+                    <div class="benifit__single">
+                        <div class="benifit__thumb">
+                            <img class="before-processed-img mb-3">
+                        </div>
+                        <div class="content" style="text-align: center; height: 30px; font-size: 30px">
+                            <h6 style="margin-top: -13px">Before Processed</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- After Images Section -->
+            <h3 class="text-center mb-4">After Images</h3>
+            <div class="row">
+                <div class="col-lg-6 mb-30">
+                    <div class="benifit__single">
+                        <div class="benifit__thumb">
+                            <img class="after-original-img mb-3">
+                        </div>
+                        <div class="content" style="text-align: center; height: 30px; font-size: 30px">
+                            <h6 style="margin-top: -13px">After Original</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-30">
+                    <div class="benifit__single">
+                        <div class="benifit__thumb">
+                            <img class="after-processed-img mb-3">
+                        </div>
+                        <div class="content" style="text-align: center; height: 30px; font-size: 30px">
+                            <h6 style="margin-top: -13px">After Processed</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Before Grayscale Discretization Analysis -->
+            <div class="row" id="beforeDiscretizeResultSection">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Before Grayscale Discretization Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="text-center">
+                                        <img id="beforeDiscretizedImage" class="img-fluid" alt="Before Discretized Image">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Before Grayscale Level Statistics</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th>Level</th>
+                                                <th>Pixel Count</th>
+                                                <th>Percentage (%)</th>
+                                                <th>Area (m²)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="beforeDiscretizeStatsBody">
+                                            <!-- Statistics will be populated here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- After Grayscale Discretization Analysis -->
+            <div class="row mt-4" id="afterDiscretizeResultSection">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">After Grayscale Discretization Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="text-center">
+                                        <img id="afterDiscretizedImage" class="img-fluid" alt="After Discretized Image">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>After Grayscale Level Statistics</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th>Level</th>
+                                                <th>Pixel Count</th>
+                                                <th>Percentage (%)</th>
+                                                <th>Area (m²)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="afterDiscretizeStatsBody">
+                                            <!-- Statistics will be populated here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Before Water/Land Area Statistics -->
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Before Water/Land Area Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Pixel Count</th>
+                            <th>Percentage (%)</th>
+                            <th>Area (m²)</th>
+                        </tr>
+                        </thead>
+                        <tbody id="beforeWaterLandStatsBody">
+                        <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                    <div class="mt-3">
+                        <p><strong>Spatial Resolution:</strong> <span id="beforeSpatialResolution"></span> meters/pixel</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- After Water/Land Area Statistics -->
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">After Water/Land Area Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Pixel Count</th>
+                            <th>Percentage (%)</th>
+                            <th>Area (m²)</th>
+                        </tr>
+                        </thead>
+                        <tbody id="afterWaterLandStatsBody">
+                        <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                    <div class="mt-3">
+                        <p><strong>Spatial Resolution:</strong> <span id="afterSpatialResolution"></span> meters/pixel</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <a href="/upload" class="btn btn-primary">Return to Upload Page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 在现有的统计表格下方添加水陆统计信息 -->
+
+
+<!-- back to top -->
+<div class="scroll active-scroll">
+    <svg class="scroll__circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"
+              style="transition: stroke-dashoffset 10ms linear 0s; stroke-dasharray: 307.919px, 307.919px; stroke-dashoffset: 244.073px;">
+        </path>
+    </svg>
+</div>
+<!-- back to top end -->
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 从sessionStorage获取处理结果
+        let resultData;
+        try {
+            const rawData = sessionStorage.getItem('comparisonResult');
+            console.log('原始数据:', rawData);
+            resultData = JSON.parse(rawData || '{}');
+            console.log('解析后的数据:', resultData);
+        } catch (e) {
+            console.error('解析数据失败:', e);
+            alert('数据解析失败，请重新上传图像');
+            return;
+        }
+
+        // 更新所有Before原始图像元素
+        if (resultData.beforeOriginalUrl) {
+            document.querySelectorAll('.before-original-img').forEach(function(img) {
+                img.src = resultData.beforeOriginalUrl;
+            });
+        }
+
+        // 更新所有Before处理后图像元素
+        if (resultData.beforeProcessedUrl) {
+            document.querySelectorAll('.before-processed-img').forEach(function(img) {
+                img.src = resultData.beforeProcessedUrl;
+            });
+        }
+
+        // 更新所有After原始图像元素
+        if (resultData.afterOriginalUrl) {
+            document.querySelectorAll('.after-original-img').forEach(function(img) {
+                img.src = resultData.afterOriginalUrl;
+            });
+        }
+
+        // 更新所有After处理后图像元素
+        if (resultData.afterProcessedUrl) {
+            document.querySelectorAll('.after-processed-img').forEach(function(img) {
+                img.src = resultData.afterProcessedUrl;
+            });
+        }
+
+        // 显示Before离散化图像
+        if (resultData.beforeDiscretizedUrl) {
+            console.log('Before离散化图像URL:', resultData.beforeDiscretizedUrl);
+            document.getElementById('beforeDiscretizedImage').src = resultData.beforeDiscretizedUrl;
+            document.getElementById('beforeDiscretizedImage').onerror = function () {
+                console.error('Before离散化图像加载失败');
+                this.alt = '图像加载失败';
+            };
+        } else {
+            console.error('未找到Before离散化图像URL');
+            const imgElement = document.getElementById('beforeDiscretizedImage');
+            if (imgElement) {
+                imgElement.alt = 'Before离散化图像处理失败';
+            }
+        }
+
+        // 显示After离散化图像
+        if (resultData.afterDiscretizedUrl) {
+            console.log('After离散化图像URL:', resultData.afterDiscretizedUrl);
+            document.getElementById('afterDiscretizedImage').src = resultData.afterDiscretizedUrl;
+            document.getElementById('afterDiscretizedImage').onerror = function () {
+                console.error('After离散化图像加载失败');
+                this.alt = '图像加载失败';
+            };
+        } else {
+            console.error('未找到After离散化图像URL');
+            const imgElement = document.getElementById('afterDiscretizedImage');
+            if (imgElement) {
+                imgElement.alt = 'After离散化图像处理失败';
+            }
+        }
+
+        // 填充Before统计数据
+        if (resultData.beforeDiscretizeStats && !resultData.beforeDiscretizeStats.error) {
+            const statsBody = document.getElementById('beforeDiscretizeStatsBody');
+            if (statsBody) {
+                statsBody.innerHTML = ''; // 清空现有内容
+
+                if (Array.isArray(resultData.beforeDiscretizeStats.levels)) {
+                    for (let i = 0; i < resultData.beforeDiscretizeStats.levels.length; i++) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>${resultData.beforeDiscretizeStats.levels[i]}</td>
+                        <td>${resultData.beforeDiscretizeStats.pixelCounts[i]}</td>
+                        <td>${resultData.beforeDiscretizeStats.percentages[i].toFixed(2)}</td>
+                        <td>${resultData.beforeDiscretizeStats.areas[i].toFixed(2)}</td>
+                    `;
+                        statsBody.appendChild(row);
+                    }
+                } else {
+                    statsBody.innerHTML = '<tr><td colspan="4">无可用数据</td></tr>';
+                }
+            }
+        } else {
+            console.error('Before统计数据不完整或有错误:', resultData.beforeDiscretizeStats?.error || '未知错误');
+            const statsBody = document.getElementById('beforeDiscretizeStatsBody');
+            if (statsBody) {
+                statsBody.innerHTML = `<tr><td colspan="4" class="text-danger">处理失败: ${resultData.beforeDiscretizeStats?.error || '未知错误'}</td></tr>`;
+            }
+        }
+
+        // 填充After统计数据
+        if (resultData.afterDiscretizeStats && !resultData.afterDiscretizeStats.error) {
+            const statsBody = document.getElementById('afterDiscretizeStatsBody');
+            if (statsBody) {
+                statsBody.innerHTML = ''; // 清空现有内容
+
+                if (Array.isArray(resultData.afterDiscretizeStats.levels)) {
+                    for (let i = 0; i < resultData.afterDiscretizeStats.levels.length; i++) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>${resultData.afterDiscretizeStats.levels[i]}</td>
+                        <td>${resultData.afterDiscretizeStats.pixelCounts[i]}</td>
+                        <td>${resultData.afterDiscretizeStats.percentages[i].toFixed(2)}</td>
+                        <td>${resultData.afterDiscretizeStats.areas[i].toFixed(2)}</td>
+                    `;
+                        statsBody.appendChild(row);
+                    }
+                } else {
+                    statsBody.innerHTML = '<tr><td colspan="4">无可用数据</td></tr>';
+                }
+            }
+        } else {
+            console.error('After统计数据不完整或有错误:', resultData.afterDiscretizeStats?.error || '未知错误');
+            const statsBody = document.getElementById('afterDiscretizeStatsBody');
+            if (statsBody) {
+                statsBody.innerHTML = `<tr><td colspan="4" class="text-danger">处理失败: ${resultData.afterDiscretizeStats?.error || '未知错误'}</td></tr>`;
+            }
+        }
+
+// Fill Before water/land statistics table
+const beforeWaterLandStatsBody = document.getElementById('beforeWaterLandStatsBody');
+const beforeSpatialResolutionElement = document.getElementById('beforeSpatialResolution');
+
+if (beforeWaterLandStatsBody && resultData.beforeWaterLandStats) {
+    console.log('Filling Before water/land statistics table');
+    beforeWaterLandStatsBody.innerHTML = ''; // Clear existing content
+
+    // Add water row
+    const waterRow = document.createElement('tr');
+    waterRow.innerHTML = `
+        <td>Water</td>
+        <td>${resultData.beforeWaterLandStats.water_pixels.toLocaleString()}</td>
+        <td>${resultData.beforeWaterLandStats.water_percentage.toFixed(2)}</td>
+        <td>${resultData.beforeWaterLandStats.water_area.toFixed(2)}</td>
+    `;
+    beforeWaterLandStatsBody.appendChild(waterRow);
+
+    // Add land row
+    const landRow = document.createElement('tr');
+    landRow.innerHTML = `
+        <td>Ground</td>
+        <td>${resultData.beforeWaterLandStats.land_pixels.toLocaleString()}</td>
+        <td>${resultData.beforeWaterLandStats.land_percentage.toFixed(2)}</td>
+        <td>${resultData.beforeWaterLandStats.land_area.toFixed(2)}</td>
+    `;
+    beforeWaterLandStatsBody.appendChild(landRow);
+
+    // Add total row
+    const totalRow = document.createElement('tr');
+    totalRow.className = 'table-active';
+    totalRow.innerHTML = `
+        <td><strong>Total</strong></td>
+        <td><strong>${resultData.beforeWaterLandStats.total_pixels.toLocaleString()}</strong></td>
+        <td><strong>100.00</strong></td>
+        <td><strong>${resultData.beforeWaterLandStats.total_area.toFixed(2)}</strong></td>
+    `;
+    beforeWaterLandStatsBody.appendChild(totalRow);
+
+    // Display spatial resolution
+    if (beforeSpatialResolutionElement) {
+        beforeSpatialResolutionElement.textContent = resultData.beforeWaterLandStats.spatial_resolution;
+    }
+}
+
+// Similarly for After water/land statistics table
+const afterWaterLandStatsBody = document.getElementById('afterWaterLandStatsBody');
+const afterSpatialResolutionElement = document.getElementById('afterSpatialResolution');
+
+if (afterWaterLandStatsBody && resultData.afterWaterLandStats) {
+    console.log('Filling After water/land statistics table');
+    afterWaterLandStatsBody.innerHTML = ''; // Clear existing content
+
+    // Add water row
+    const waterRow = document.createElement('tr');
+    waterRow.innerHTML = `
+        <td>Water</td>
+        <td>${resultData.afterWaterLandStats.water_pixels.toLocaleString()}</td>
+        <td>${resultData.afterWaterLandStats.water_percentage.toFixed(2)}</td>
+        <td>${resultData.afterWaterLandStats.water_area.toFixed(2)}</td>
+    `;
+    afterWaterLandStatsBody.appendChild(waterRow);
+
+    // Add land row
+    const landRow = document.createElement('tr');
+    landRow.innerHTML = `
+        <td>Ground</td>
+        <td>${resultData.afterWaterLandStats.land_pixels.toLocaleString()}</td>
+        <td>${resultData.afterWaterLandStats.land_percentage.toFixed(2)}</td>
+        <td>${resultData.afterWaterLandStats.land_area.toFixed(2)}</td>
+    `;
+    afterWaterLandStatsBody.appendChild(landRow);
+
+    // Add total row
+    const totalRow = document.createElement('tr');
+    totalRow.className = 'table-active';
+    totalRow.innerHTML = `
+        <td><strong>Total</strong></td>
+        <td><strong>${resultData.afterWaterLandStats.total_pixels.toLocaleString()}</strong></td>
+        <td><strong>100.00</strong></td>
+        <td><strong>${resultData.afterWaterLandStats.total_area.toFixed(2)}</strong></td>
+    `;
+    afterWaterLandStatsBody.appendChild(totalRow);
+
+    // Display spatial resolution
+    if (afterSpatialResolutionElement) {
+        afterSpatialResolutionElement.textContent = resultData.afterWaterLandStats.spatial_resolution;
+    }
+}
+    });
+
+</script>
+
+
+<!-- all jquery plugins here -->
+<!-- jquery -->
+<script src="{{ url_for('static', filename='js/Jquery-3.7.0.js') }}"></script>
+<!-- bootstrap- jquery included -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- slick slider- jquery included -->
+<script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+<!-- niceselect - jquery included -->
+<script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+<!-- imageloaded pkgd - jquery included -->
+<script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}"></script>
+<!-- appear - jquery included -->
+<script src="{{ url_for('static', filename='js/appear.min.js') }}"></script>
+<!-- modal video - jquery included -->
+<script src="{{ url_for('static', filename='js/jquery-modal-video.min.js') }}"></script>
+<!-- meamenu - jquery inclued -->
+<script src="{{ url_for('static', filename='js/jquery.meanmenu.min.js') }}"></script>
+<!-- video js - jquery included -->
+<script src="{{ url_for('static', filename='js/video.js') }}"></script>
+<!-- cursor js - jquery included -->
+<script src="{{ url_for('static', filename='js/cursor.js') }}"></script>
+<!-- main js -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+<script src="{{ url_for('static', filename='js/slide.js') }}"></script>
+<script>
+    new BeforeAfter({
+        id: '#one'
+    });
+    new BeforeAfter({
+        id: '#two'
+    });
+    new BeforeAfter({
+        id: '#three'
+    });
+    fetch('/upload_file', {
+        method: 'POST',
+        body: formData
+    })
+</script>
+</body>
+
+</html>
