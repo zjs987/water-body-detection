@@ -1,0 +1,32 @@
+[January 27, 2025 03:01:29] INFO in auth: 597535178@qq.com login success ! 
+[January 27, 2025 17:09:48] INFO in auth: 597535178@qq.com login success ! 
+[January 27, 2025 17:12:31] INFO in auth: 597535178@qq.com login success ! 
+[January 27, 2025 19:18:11] INFO in auth: 597535178@qq.com login success ! 
+[February 07, 2025 17:08:39] INFO in auth: 597535178@qq.com login success ! 
+[February 07, 2025 17:19:34] INFO in auth: 597535178@qq.com login success ! 
+[February 13, 2025 16:17:22] INFO in auth: 597535178@qq.com login success ! 
+[February 20, 2025 18:18:50] INFO in auth: 597535178@qq.com login success ! 
+[February 26, 2025 00:45:41] INFO in auth: 597535178@qq.com login success ! 
+[February 26, 2025 15:12:38] INFO in auth: jingshuz1108@gmail.com login success ! 
+[February 26, 2025 17:17:29] INFO in auth: 597535178@qq.com login success ! 
+[March 01, 2025 22:59:05] INFO in auth: 597535178@qq.com login success ! 
+[March 03, 2025 03:11:08] INFO in auth: 597535178@qq.com login success ! 
+[March 03, 2025 04:34:32] INFO in auth: 597535178@qq.com login success ! 
+[March 05, 2025 13:09:01] INFO in auth: 597535178@qq.com login success ! 
+[March 12, 2025 23:14:01] INFO in auth: 597535178@qq.com login success ! 
+[March 16, 2025 16:15:47] INFO in auth: 597535178@qq.com login success ! 
+[March 21, 2025 00:30:22] ERROR in main: 图像处理失败: dictionary changed size during iteration
+[March 21, 2025 00:30:22] ERROR in main: 图像处理失败: 'NoneType' object is not iterable
+[March 21, 2025 00:32:43] ERROR in main: 灰度离散化处理失败: process_image() got an unexpected keyword argument 'matrix_name'
+[March 21, 2025 00:33:23] ERROR in main: 灰度离散化处理失败: process_image() got an unexpected keyword argument 'matrix_name'
+[March 21, 2025 00:34:59] ERROR in main: 灰度离散化处理失败: process_image() got an unexpected keyword argument 'matrix_name'
+[March 21, 2025 00:40:53] ERROR in main: 图像处理失败: Object of type int32 is not JSON serializable
+[March 21, 2025 00:41:49] ERROR in main: 图像处理失败: Object of type int32 is not JSON serializable
+[March 21, 2025 00:42:30] ERROR in main: 灰度离散化处理失败: process_image() got an unexpected keyword argument 'matrix_name'
+[March 21, 2025 00:46:14] INFO in main: 离散化图像已成功保存到: C:\Users\86151\Desktop\water\processed_images\discretized.png
+[March 21, 2025 00:46:14] ERROR in main: 图像处理失败: Object of type int32 is not JSON serializable
+[March 21, 2025 13:43:27] ERROR in main: 灰度离散化处理失败: process_image() got an unexpected keyword argument 'matrix_name'
+[April 10, 2025 22:28:19] INFO in auth: 597535178@qq.com login success ! 
+[April 10, 2025 22:29:18] INFO in auth: 597535178@qq.com login success ! 
+[April 16, 2025 15:47:24] INFO in auth: 597535178@qq.com login success ! 
+[April 16, 2025 15:48:59] INFO in auth: sc21j3z@leeds.ac.uk login success ! 
