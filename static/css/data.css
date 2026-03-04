@@ -1,0 +1,152 @@
+@charset "utf-8";
+/* CSS Document */
+*{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box}
+*,body{padding:0px;	margin:0px; }
+body{ background: linear-gradient(25deg, #0f2249,#182e5a 20%,#0f2249 40%,#182e5a 60%,#0f2249 80%,#182e5a 100%);color:#fff; font-family:"PingFang SC","Lantinghei SC","Microsoft YaHei","HanHei SC","Helvetica Neue","Open Sans",Arial,"Hiragino Sans GB","等线",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif; }
+li{ list-style-type:none;}
+table{}
+i{ margin:0px; padding:0px; text-indent:0px;}
+img{ border:none; max-width: 100%;}
+a{ text-decoration:none; color:#399bff;}
+a.active,a:focus{ outline:none!important; text-decoration:none;}
+ol,ul,p,h1,h2,h3,h4,h5,h6{ padding:0; margin:0}
+a:hover{ color:#06c; text-decoration: none!important}
+i,em{font-style: normal;}
+
+.clearfix:after, .clearfix:before {
+	display: table;
+	content: " "
+}
+ .clearfix:after {
+	clear: both
+}
+.pulll_left{float:left;}
+.pulll_right{float:right;}
+/*谷哥滚动条样式*/
+  ::-webkit-scrollbar {width:5px;height:5px;position:absolute}
+  ::-webkit-scrollbar-thumb {background-color:#5bc0de}
+  ::-webkit-scrollbar-track {background-color:#ddd}
+/***/
+/* .loading{position:fixed; left:0; top:0; font-size:.3rem; z-index:100000000;width:100%; height:100%; background:#1a1a1c; text-align:center;}
+.loadbox{position:absolute; width:160px;height:150px; color: #324e93; left:50%; top:50%; margin-top:-100px; margin-left:-75px;}
+.loadbox img{ margin:10px auto; display:block; width:40px;} */
+html,body {	width: 100%;height: 100%;margin: 0;	padding: 0;  overflow: hidden}
+.videobg{ position: fixed;; width: 100%; height: 100%; left: 0; top: 0; 
+background: #000;background: -webkit-radial-gradient(50% 10%,farthest-corner, #2a4fa9 0%, #101e42 50%,#090d1b,#000);}
+.videobg video{ object-fit: cover; filter:blur(2px); opacity: .05;filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='5'); position: relative; }
+
+.head{ height:90px;  position: relative; z-index: 12; display: flex; align-items: center; justify-content: center;}
+.head::before,.head::after{ width: 100%; height: 90px; content: "";}
+.head::before{ background: url(../images/headleft.png) right top no-repeat;}
+.head::after{ background: url(../images/head_right.png) left top  no-repeat;}
+
+.head h1{ flex-shrink: 0; background: url(../images/head_center.png) center top no-repeat; margin-left:-150px;
+	margin-right:-150px;
+	 background-size:calc(100% - 300px) 79px ; height: 90px;;}
+.head h1 span{ color:#f6fbff; text-align: center; font-size: 46px; line-height:70px;  font-family: "Microsoft YaHei";
+	background: linear-gradient(180deg,#fdfeff, #9fd8ff);background-size: cover;-webkit-background-clip: text;background-clip: text;-webkit-text-fill-color: transparent;text-fill-color: transparent;}
+
+html,body{height: 100%;}
+.mainbox1{ height:calc(65% - 100px);  overflow: hidden; padding-top: 10px;}
+.mainbox2{ height:35%; overflow: hidden;}
+.mainbox1>ul,.mainbox2>ul{ height: 100%; padding: 0 5px;}
+.mainbox1>ul>li,.mainbox2>ul>li{ float: left; padding: 0 7px;height: 100%;}
+
+.mainbox1>ul>li:nth-child(1){ width: 25%}
+.mainbox1>ul>li:nth-child(2){ width: 30%}
+.mainbox1>ul>li:last-child{ width: 45%}
+
+.mainbox2>ul>li:nth-child(1){ width:25%}
+.mainbox2>ul>li:nth-child(2){ width:30%}
+.mainbox2>ul>li:nth-child(3){ width:45%}
+
+
+
+.boxall{ border: 1px solid rgba(52, 152, 218, 0.05); height: calc(100% - 10px); background: rgba(0, 104, 190, 0.05); padding:10px; position: relative; margin-bottom: 10px; z-index: 12;}
+.tit01{color: rgba(255,255,255,.9); font-size:16px; font-weight: bold; position: absolute ; top: 5px;}
+.boxnav { height: 100%; padding-top: 10px;}
+
+/* 
+.boxall{ border: 1px solid rgba(52, 152, 218, 0.05); height: calc(100% - 37px); background: rgba(0, 104, 190, 0.05); padding:10px; position: relative; margin-bottom: 10px; z-index: 12;}
+.tit01{
+	color: rgba(255,255,255,.9); font-size:16px; padding: 0 ; line-height: 30px;margin-bottom: 10px;position: relative; z-index: 12;margin-top: -39px; margin-left: -12px;margin-right: -12px; display: flex; justify-content: space-between;}
+.boxall{ margin-top: 32px;}
+.boxnav { height: 100%;} */
+
+
+.boxall:before,
+.boxall:after{ position:absolute; width: 15px; height: 15px; content: "";  border-top: 1px solid #3486da; top: -1px;opacity: .2;}
+.boxall:before,.boxfoot:before{border-left: 1px solid #3486da;left:-2px;}
+.boxall:after,.boxfoot:after{border-right: 1px solid #3486da; right: -2px;}
+.boxfoot{ position:absolute; bottom: 0; width: 100%; left:0;}
+.boxfoot:before,
+.boxfoot:after{ position:absolute; width: 15px; height: 15px;  content: "";border-bottom:1px solid #3486da; bottom:-1px; opacity: .2;}
+
+
+
+ .map{ height: 100%;  position: relative;}
+ .time{ position: absolute; left: 20px; top: 0; font-family: "等线"; line-height: 50px; padding-right: 15px; font-size: 18px; font-weight: lighter;}
+.topbtns{position: absolute; right: 20px; top: 0; height: 48px; display: flex; align-items: center;}
+.topbtns a{ display: flex; align-items: center; color: rgb(124, 201, 249); font-size: 15px;}
+.topbtns a img{ width: 18px; position: relative; 	margin-right: 3px;}
+ .text{ display: flex;align-items: center;}
+ .text ul{ display: flex;align-items: center; width: 100%;}
+ .text li{width: 50%; text-align: center}
+ .text li>span{ opacity: .5;}
+ .text li p{ font-size: 40px; font-family: "等线";  padding-top: 5px;}
+ /* .text li p span{font-weight: bold;} */
+
+
+ /**动画元素***/
+.fadeIn{opacity:0;animation:fadeIn 1s forwards}
+.fadeInDown{opacity:0;transform:translate3d(0,-100%,0);animation:fadeInDown .6s forwards}
+.fadeInUp{animation-name:fadeInUp}
+.fadeInLeft{animation-name:fadeInLeft}
+.bounceIn{transform:scale(0,1);animation:bounceIn .6s forwards}
+
+@keyframes fadeInLeft{0%{opacity:0;-webkit-transform:translate3d(-100%,0,0);transform:translate3d(-100%,0,0)}
+to{opacity:1;-webkit-transform:none;transform:none}
+}
+@keyframes fadeIn{0%{opacity:0;transform:scale(.8) }
+to{opacity:1;transform:scale(1) }
+}
+@keyframes fadeInDown{0%{opacity:0;-webkit-transform:translate3d(0,-100%,0);transform:translate3d(0,-100%,0)}
+to{opacity:1;-webkit-transform:none;transform:none}
+}
+@keyframes fadeInUp{0%{opacity:0;-webkit-transform:translate3d(0,100%,0);transform:translate3d(0,100%,0)}
+to{opacity:1;-webkit-transform:none;transform:none}
+}
+.delay02{animation-delay:.2s}
+.delay04{animation-delay:.4s}
+.delay06{animation-delay:.6s}
+.delay08{animation-delay:.8s}
+.delay1{animation-delay:1s}
+.delay12{animation-delay:1.2s}
+.delay14{animation-delay:1.4s}
+.delay16{animation-delay:1.6s}
+.delay18{animation-delay:1.8s}
+.delay2{animation-delay:2s}
+
+
+.number-animate{line-height:45px; height: 45px;font-size: 40px;overflow: hidden; display: inline-block; position: relative; }
+.number-animate .number-animate-dot{ width: 21px; float: left; text-align: center;}
+.number-animate .number-animate-dom{ width: 24px;  text-align: center; float: left; position: relative; top: 0;}
+.number-animate .number-animate-dom span,.number-animate .number-animate-dot span{float: left;width: 100%;height: 45px;line-height: 1.1;}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+.mainbox1, .mainbox2 {
+    height: 100%;
+}
+.mainbox1 {
+    flex: 6;
+}
+.mainbox2 {
+    flex: 4;
+}
